@@ -15,18 +15,12 @@ resources:
   type: slack-notification
   source:
     url: https://hooks.slack.com/services/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
-- name: hoge
-  type: git
-  source:
-    uri: https://github.com/justice3120/flight-school
-    branch: master
 
 jobs:
 - name: test-app
   plan:
   - get: flight-school
     trigger: true
-  - get: hoge
   - task: tests
     file: flight-school/build.yml
   - put: notify-slack
@@ -37,8 +31,7 @@ jobs:
       icon_url: "https://blog.altoros.com/wp-content/uploads/2016/05/concourse-ci-7809479.png"
 - name: job2
   plan:
-  - get: hoge
+  - get: flight-school
     trigger: true
-    passed: [test-app]
   - task: tests
     file: flight-school/build_local.yml
